@@ -8,16 +8,23 @@ def solution(queue1, queue2):
     que1 = deque(queue1)
     que2 = deque(queue2)
 
-    total = (sum(queue1) + sum(queue2)) // 2
+    sq1 = sum(que1)
+    sq2 = sum(que2)
+    total = (sq1 + sq2) // 2
 
-    count = 0
-    while que1 and que2:
-        if sum(que1) == total:
-            return count
-        elif sum(que1) > total:
-            que2.append(que1.popleft())
+    # while문 사용시 무한 루프 도는 케이스 발생 -> for문으로 범위 줘서 해결
+    for i in range(len(queue1) * 3):
+        if sq1 == total:
+            return i
+        elif sq1 > total:
+            t = que1.popleft()
+            sq1 -= t
+            sq2 += t
+            que2.append(t)
         else:
-            que1.append(que2.popleft())
-        count += 1
+            t = que2.popleft()
+            sq1 += t
+            sq2 -= t
+            que1.append(t)
 
     return answer
